@@ -1,7 +1,6 @@
 # DetPoisson_R
-Randomly simulates a determinantally-thinned Poisson point process on a rectangle.
+Randomly simulates a determinantally-thinned Poisson point process on a rectangle. This is a repulsive point process, where the repulsion depends on the kernel and average density of points
 
-This file randomly simulates a determinantally-thinned Poisson point process.
 For details; see the paper by Blaszczyszyn and Keeler[1].
 
 References:
