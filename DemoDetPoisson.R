@@ -31,8 +31,8 @@ xx=xDelta*runif(numbPoints)+xMin;#x coordinates of Poisson points
 yy=xDelta*runif(numbPoints)+yMin;#y coordinates of Poisson points
 
 # START -- CREATE L matrix -- START 
-#Calculate Gaussian kernel based on grid x/y values
 sizeL=numbPoints;
+#Calculate Gaussian or kernel kernel based on grid x/y values
 #all squared distances of x/y difference pairs
 xxDiff=(outer(xx,rep(1,sizeL))-outer(rep(1,sizeL),xx));
 yyDiff=(outer(yy,rep(1,sizeL))-outer(rep(1,sizeL),yy))
@@ -72,7 +72,7 @@ if (numbPointsDPP>1){
     indexDPP[ii] <- min(which(cumsum(Prob_i)>runif(1)));
     
     #Choose a vector to eliminate
-    jj = min(which(subspaceV[indexDPP[ii],]!=0))    
+    jj = min(which(subspaceV[indexDPP[ii],]!=0));    
     columnVj <- subspaceV[,jj];
     subspaceV <- subspaceV[,-jj];
     
