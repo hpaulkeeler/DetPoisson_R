@@ -1,4 +1,4 @@
-#This file randomly simulates a determinantally-thinned Poisson point process.
+#Randomly simulates a determinantally-thinned Poisson point process.
 #For details; see the paper by Blaszczyszyn and Keeler[1].
 #
 # Author: H.P. Keeler, Inria/ENS, Paris, and University of Melbourne, Melbourne, 2018.
@@ -9,8 +9,6 @@
 rm(list=ls(all=TRUE)); #clear all variables
 graphics.off(); #close all figures
 cat("\014"); #clear screen
-this.dir <- dirname(parent.frame(2)$ofile); #getting path where current file is located
-setwd(this.dir) ; #setting path where current file is located
 
 #START -- Parameters -- START
 #Poisson point process parameters
@@ -92,5 +90,8 @@ indexDPP <- sort(indexDPP); #sort points
 indexDPP <-indexDPP;
 #END - Simulating/sampling DPP - END
 
+#Plotting
 plot(xx,yy,col="black",pch=1,cex=3);
-points(xx[indexDPP],yy[indexDPP],col="red",pch=16,cex=2);
+colorAll=colors(); #list all colors
+colorRand=colorAll[sample(length(colorAll),1)] #randomly choose one color
+points(xx[indexDPP],yy[indexDPP],col=colorRand,pch=16,cex=2);
