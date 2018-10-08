@@ -1,5 +1,10 @@
-#Randomly simulates a determinantally-thinned Poisson point process.
-#For details; see the paper by Blaszczyszyn and Keeler[1].
+# Randomly simulates a determinantally-thinned Poisson point process. 
+#
+# A determinantally-thinned Poisson point process is essentially a discrete
+# determinantal point process whose underlying state space is a single 
+# realization of a Poisson point process defined on some bounded continuous space. 
+#
+# For more details, see the paper by Blaszczyszyn and Keeler[1].
 #
 # Author: H.P. Keeler, Inria/ENS, Paris, and University of Melbourne, Melbourne, 2018.
 #
