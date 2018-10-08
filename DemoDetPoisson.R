@@ -40,7 +40,7 @@ sizeL=numbPoints;
 #Calculate Gaussian or kernel kernel based on grid x/y values
 #all squared distances of x/y difference pairs
 xxDiff=(outer(xx,rep(1,sizeL))-outer(rep(1,sizeL),xx));
-yyDiff=(outer(yy,rep(1,sizeL))-outer(rep(1,sizeL),yy))
+yyDiff=(outer(yy,rep(1,sizeL))-outer(rep(1,sizeL),yy));
 rrDiffSquared=(xxDiff^2+yyDiff^2);
 if (choiceKernel==1){
   #Gaussian/squared exponential kernel
@@ -64,30 +64,31 @@ eigenValuesK <- eigenValuesL / (1+eigenValuesL); #eigenvalues of K
 indexEigen <- which(runif(sizeL) <= eigenValuesK); #Bernoulli trials
 
 numbPointsDPP<-length(indexEigen); #number of points 
-subspaceV <- eigenVectorsL[,indexEigen];
-indexDPP <- rep(0,numbPointsDPP,1);
+spaceV <- eigenVectorsL[,indexEigen]; #subspace V
+indexDPP <- rep(0,numbPointsDPP,1); #vector for index
 
 if (numbPointsDPP>1){
   for (ii in numbPointsDPP:1){
     #Compute probabilities for each point i
-    Prob_i <- rowSums(subspaceV^2); #sum across rows
+    Prob_i <- rowSums(spaceV^2); #sum across rows
     Prob_i <- Prob_i / sum(Prob_i); #normalize
     
     #Choose a new point using PMF Prob_i
-    indexDPP[ii] <- min(which(cumsum(Prob_i)>runif(1)));
+    indexCurrent <- min(which(cumsum(Prob_i)>runif(1)));
+    indexDPP[ii]<-indexCurrent;
     
     #Choose a vector to eliminate
-    jj = min(which(subspaceV[indexDPP[ii],]!=0));    
-    columnVj <- subspaceV[,jj];
-    subspaceV <- subspaceV[,-jj];
+    jj<-min(which(spaceV[indexCurrent,]!=0));    
+    columnVj <- spaceV[,jj];
+    spaceV <- spaceV[,-jj];
     
-    subspaceV=matrix(subspaceV,sizeL,ii-1); #reshape matrix
+    spaceV=matrix(spaceV,sizeL,ii-1); #reshape matrix
     
     #Update matrix V
-    subspaceV <- subspaceV - outer(columnVj,(subspaceV[indexDPP[ii],]/columnVj[indexDPP[ii]])); #remove Vj component from the space
+    spaceV <- spaceV - outer(columnVj,(spaceV[indexCurrent,]/columnVj[indexCurrent])); #remove Vj component from the space
     #subspaceV<-orth(subspaceV); # Orthogonalize V using SVD
-    tempQR=qr(subspaceV,k=ii);
-    subspaceV<-qr.Q(tempQR); #Orthonormalize using Householder method
+    tempQR=qr(spaceV,k=ii);
+    spaceV<-qr.Q(tempQR); #Orthonormalize using Householder method
     
   }
 }
