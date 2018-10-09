@@ -100,7 +100,9 @@ indexDPP <-indexDPP;
 #END - Simulating/sampling DPP - END
 
 #Plotting
+#Plot Poisson point process
 plot(xx,yy,col="black",pch=1,cex=3);
 colorAll=colors(); #list all colors
 colorRand=colorAll[sample(length(colorAll),1)] #randomly choose one color
+#Plot determinantally-thinned Poisson point process
 points(xx[indexDPP],yy[indexDPP],col=colorRand,pch=16,cex=2);
