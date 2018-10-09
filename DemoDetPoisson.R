@@ -50,7 +50,7 @@ if (choiceKernel==1){
     #Cauchy kernel
     L=lambda/(1+rrDiffSquared/sigma^2)^(alpha+1/2);
   } else{
-    stop('choiceKernel has to be equal to 1 or 2.')
+    stop('choiceKernel has to be equal to 1 or 2.');
   }
 }
 # END-- CREATE L matrix -- # END
@@ -63,10 +63,13 @@ eigenVectorsL[,2]=tmp$vectors[,3]; eigenVectorsL[,3]=tmp$vectors[,2]# REMOVE lat
 eigenValuesK <- eigenValuesL / (1+eigenValuesL); #eigenvalues of K
 indexEigen <- which(runif(sizeL) <= eigenValuesK); #Bernoulli trials
 
-numbPointsDPP<-length(indexEigen); #number of points 
+#number of points in the DPP realization
+numbPointsDPP<-length(indexEigen);
+#retrieve eigenvectors corresponding to successful Bernoulli trials
 spaceV <- eigenVectorsL[,indexEigen]; #subspace V
-indexDPP <- rep(0,numbPointsDPP,1); #vector for index
+indexDPP <- rep(0,numbPointsDPP,1); #vector for final DPP configuration
 
+#Loop through for all points
 if (numbPointsDPP>1){
   for (ii in numbPointsDPP:1){
     #Compute probabilities for each point i
