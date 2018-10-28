@@ -61,7 +61,7 @@ tmp=eigen(L); eigenValuesL=tmp$values; eigenVectorsL=tmp$vectors
 eigenVectorsL[,2]=tmp$vectors[,3]; eigenVectorsL[,3]=tmp$vectors[,2]# REMOVE later
 
 eigenValuesK <- eigenValuesL / (1+eigenValuesL); #eigenvalues of K
-indexEigen <- which(runif(sizeL) <= eigenValuesK); #Bernoulli trials
+indexEigen <- which(runif(sizeL) <= eigenValuesK); #index of successful Bernoulli trials
 
 #number of points in the DPP realization
 numbPointsDPP<-length(indexEigen);
@@ -96,7 +96,6 @@ if (numbPointsDPP>1){
   }
 }
 indexDPP <- sort(indexDPP); #sort points
-indexDPP <-indexDPP;
 #END - Simulating/sampling DPP - END
 
 #Plotting
