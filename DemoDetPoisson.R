@@ -67,11 +67,12 @@ indexEigen <- which(runif(sizeL) <= eigenValuesK); #index of successful Bernoull
 numbPointsDPP<-length(indexEigen);
 #retrieve eigenvectors corresponding to successful Bernoulli trials
 spaceV <- eigenVectorsL[,indexEigen]; #subspace V
-indexDPP <- rep(0,numbPointsDPP,1); #vector for final DPP configuration
+indexDPP <- rep(0,numbPointsDPP); #vector for final DPP configuration
+numbPointsRemain=numbPointsDPP; #number of remaining points
 
-#Loop through for all points
-if (numbPointsDPP>1){
-  for (ii in numbPointsDPP:1){
+if (numbPointsDPP>0){
+  #Loop through for all points
+  for (ii in 1:numbPointsDPP){
     #Compute probabilities for each point i
     Prob_i <- rowSums(spaceV^2); #sum across rows
     Prob_i <- Prob_i / sum(Prob_i); #normalize
@@ -79,20 +80,23 @@ if (numbPointsDPP>1){
     #Choose a new point using PMF Prob_i
     indexCurrent <- min(which(cumsum(Prob_i)>runif(1)));
     indexDPP[ii]<-indexCurrent;
+    numbPointsRemain= numbPointsRemain-1; #update
     
-    #Choose a vector to eliminate
-    jj<-min(which(spaceV[indexCurrent,]!=0));    
-    columnVj <- spaceV[,jj];
-    spaceV <- spaceV[,-jj];
-    
-    spaceV=matrix(spaceV,sizeL,ii-1); #reshape matrix
-    
-    #Update matrix V
-    spaceV <- spaceV - outer(columnVj,(spaceV[indexCurrent,]/columnVj[indexCurrent])); #remove Vj component from the space
-    #subspaceV<-orth(subspaceV); # Orthogonalize V using SVD
-    tempQR=qr(spaceV,k=ii);
-    spaceV<-qr.Q(tempQR); #Orthonormalize using Householder method
-    
+    if (ii <numbPointsDPP){ 
+      #Choose a vector to eliminate
+      jj<-min(which(spaceV[indexCurrent,]!=0));    
+      columnVj <- spaceV[,jj];
+      spaceV <- spaceV[,-jj];
+      
+      spaceV=matrix(spaceV,sizeL,numbPointsRemain); #reshape matrix
+      
+      #Update matrix V
+      spaceV <- spaceV - outer(columnVj,(spaceV[indexCurrent,]/columnVj[indexCurrent])); #remove Vj component from the space
+      #subspaceV<-orth(subspaceV); # Orthogonalize V using SVD
+      tempQR=qr(spaceV,k=ii);
+      spaceV<-qr.Q(tempQR); #Orthonormalize using Householder method
+    }
+      
   }
 }
 indexDPP <- sort(indexDPP); #sort points
@@ -100,7 +104,7 @@ indexDPP <- sort(indexDPP); #sort points
 
 #Plotting
 #Plot Poisson point process
-plot(xx,yy,col="black",pch=1,cex=3);
+plot(xx,yy,xlab='x', ylab='y', col="black",pch=1,cex=3);
 colorAll=colors(); #list all colors
 colorRand=colorAll[sample(length(colorAll),1)] #randomly choose one color
 #Plot determinantally-thinned Poisson point process
